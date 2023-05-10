@@ -1,5 +1,3 @@
-console.log("Hello World!");
-
 if (!window.Worker) {
     console.error("Worker not supported by browser. All is lost!");
 }
@@ -36,6 +34,7 @@ function App() {
     }, [featureFlag]);
 
     const onClick = React.useCallback(() => {
+        log(`Hey! You clicked the button. Naugty!`);
         // Always enqueue the change to worker first.
         sendFeatureFlagToWorker(!featureFlag);
         // Then set our own.
