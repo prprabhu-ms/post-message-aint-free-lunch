@@ -47,3 +47,52 @@ function App() {
 const domContainer = document.getElementById('broken-component-container');
 const root = ReactDOM.createRoot(domContainer);
 root.render(e(App));
+
+// /////////////////////////////////////////////////////////////////////////
+
+class ServiceThatDothFetch {
+    constructor() {
+        this.featureFlag = false;
+    }
+
+    start() {
+       this.trigger() 
+    }
+
+    callWorkerAPI(value) {
+        myWorker.postMessage(["apiCall", value]);
+        log(`Enqueued API call with ${value} for worker`);
+    }
+
+    trigger() {
+        const capturedFeatureFlag = this.featureFlag;
+        const capturedCallWorkerApi = this.callWorkerAPI.bind(this);
+        const capturedTrigger = this.trigger.bind(this); 
+        log(`Captured featureFlag value ${capturedFeatureFlag}`);
+        setTimeout(() => {
+            log(`Timer expired. Time to do servicy things.`);
+            capturedCallWorkerApi(capturedFeatureFlag);
+            capturedTrigger();
+        }, [1000]);
+    }
+}
+
+const service = new ServiceThatDothFetch();
+const startService = service.start.bind(service);
+
+function toggleFeatureFlag() {
+    const newFeatureFlag = !service.featureFlag;
+    sendFeatureFlagToWorker(newFeatureFlag);
+    service.featureFlag = newFeatureFlag;
+}
+
+function App2() {
+    return e("div", null, [
+        e("button", { key: "start", onClick: startService }, "Start service"),
+        e("button", { key: "toggle", onClick: toggleFeatureFlag }, "Toggle feature flag with service")
+    ]);
+}
+
+const domContainer2 = document.getElementById('broken-service-container');
+const root2 = ReactDOM.createRoot(domContainer2);
+root2.render(e(App2));

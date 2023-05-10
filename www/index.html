@@ -11,13 +11,30 @@
     <li>The <code>useEffect</code> ends up calling the worker with the old captured feature flag value.</li>
     <li>Pandemonium ensues.</li>
   </ol>
-  
+
   <p>
     Click the button and then head over to the browser console!
   </p>
 
   <div id="broken-component-container"></div>
 
+  <hr/>
+
+  <h1>An example service that breaks serialization of feature flag</h1>
+  <ol>
+    <li>First start the service by clicking the "start service" button</li>
+    <li>Once started, the service does some routine work by posting a callback with a 1 second timer</li>
+    <li>The callback captures the current value of the feature flag and uses it to make an API call before posting the next task</li>
+    <li>Toggle the feature flag by clicking the "Toggle feature flag" button</li>
+    <li>When the service timer expires next, it uses the stale value of feature flag</li>
+    <li>Pandemonium ensues.</li>
+  </ol>
+
+  <p>
+    Click the buttons as instructed above  and then head over to the browser console!
+  </p>
+  
+  <div id="broken-service-container"></div>
 
   <script
   crossorigin
