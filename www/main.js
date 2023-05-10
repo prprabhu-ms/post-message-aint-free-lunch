@@ -34,11 +34,13 @@ function App() {
     }, [featureFlag]);
 
     const onClick = React.useCallback(() => {
+        const newFeatureFlag = !featureFlag;
         log(`Hey! You clicked the button. Naugty!`);
         // Always enqueue the change to worker first.
-        sendFeatureFlagToWorker(!featureFlag);
+        sendFeatureFlagToWorker(newFeatureFlag);
         // Then set our own.
-        setFeatureFlag(!featureFlag);
+        log(`Setting main thread featureFlag to ${newFeatureFlag}`)
+        setFeatureFlag(newFeatureFlag);
     }, [featureFlag, setFeatureFlag]);
 
     return e("button", { onClick }, "Toggle feature flag, dangerously!");
