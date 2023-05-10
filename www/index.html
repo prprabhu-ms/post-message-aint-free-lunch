@@ -1,0 +1,32 @@
+<head>
+
+</head>
+<body>
+  <h1>An example component that breaks serialization of feature flag</h1>
+  <ol>
+    <li>On clicking the button, a feature flag is toggled.</li>
+    <li>The feature flag is enqueued to the worker first, and then set in the component.</li>
+    <li>Setting the feature flag in the component causes a rerender</li>
+    <li>The rerender causes an old <code>useEffect</code> hook cleanup function to be called, which had captured the old value of the feature flag.</li>
+    <li>The <code>useEffect</code> ends up calling the worker with the old captured feature flag value.</li>
+    <li>Pandemonium ensues.</li>
+  </ol>
+  
+  <p>
+    Click the button and then head over to the browser console!
+  </p>
+
+  <div id="broken-component-container"></div>
+
+
+  <script
+  crossorigin
+  src="https://unpkg.com/react@18/umd/react.development.js"
+></script>
+<script
+  crossorigin
+  src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+></script>
+
+<script src="./main.js"></script>
+</body>
